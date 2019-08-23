@@ -1,15 +1,25 @@
 <template>
   <div>
     <el-form inline>
-      <el-form-item label="是否上架">
+      <el-row>
+        <el-form-item label="是否上架">
           <el-select v-model="qryInput.status" placeholder="请选择">
             <el-option :key="1" label="上架的" :value="1"></el-option>
             <el-option :key="0" label="未上架" :value="0"></el-option>
           </el-select>
-      </el-form-item>
-      <el-form-item>
+        </el-form-item>
+        <el-form-item>
           <el-button type="warning" @click='TopicList'>查询</el-button>
         </el-form-item>
+      </el-row>
+      <el-row>
+        <el-form-item label="搜索话题：">
+          <el-input v-model="search.word" placeholder="请输入话题" clearable></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="warning" @click='TopicSearch'>搜索</el-button>
+        </el-form-item>
+      </el-row>
       <el-form-item>
         <el-button type="warning" @click="addTopic">添加话题</el-button>
       </el-form-item>
@@ -20,25 +30,34 @@
       :data="list"
       style="width: 100%">
       <el-table-column
+        prop="id"
+        label="ID"
+        >
+      </el-table-column>
+      <el-table-column
         prop="title"
         label="标题"
        >
       </el-table-column>
       <el-table-column
-        prop="id"
-        label="开屏广告ID"
-        >
-      </el-table-column>
-      <el-table-column
-        label="广告图片">
+        label="话题图片">
          <template slot-scope="scope">
             <!-- {{scope.row.poster}} -->
-            <img class="photo" :src="scope.row.poster" />
+            <el-popover placement="right" title="" trigger="click">
+              <img :src="scope.row.poster" style="max-height: 500px;max-width: 500px"/>
+              <img slot="reference" :src="scope.row.poster" :alt="scope.row.poster" style="max-height: 50px;max-width: 130px">
+            </el-popover>
+            <!-- <img class="photo" :src="scope.row.poster" /> -->
         </template>
       </el-table-column>
       <el-table-column
-        prop="content"
-        label="内容"
+        prop="event_start_at"
+        label="添加时间"
+        >
+      </el-table-column>
+      <el-table-column
+        prop="event_end_at"
+        label="结束时间"
         >
       </el-table-column>
       <el-table-column
@@ -47,23 +66,16 @@
         >
         <template slot-scope="scope">{{scope.row.status === 1?'上架':'下架'}}</template>
       </el-table-column>
-      
-      <el-table-column
-        prop="event_start_at"
-        label="开始时间"
-        >
-      </el-table-column>
-      <el-table-column
-        prop="event_end_at"
-        label="结束时间"
-        >
-      </el-table-column>
 			<el-table-column label="操作" width="100px">
 				<template slot-scope="scope">
 					<el-button
-						type="primary"
-						@click="editTopic(scope.row)"
-					>修改</el-button>
+						type="text"
+						@click="editTopic(scope.row,1)"
+          >修改</el-button>
+          <el-button
+						type="text"
+						@click="editTopic(scope.row,2)"
+					>删除</el-button>
 				</template>
 			</el-table-column>
     </el-table>
@@ -72,7 +84,7 @@
         <el-form-item label="标题:">
           <el-input v-model="topicData.title"></el-input>
         </el-form-item>
-        <el-form-item label="上架时间:" v-if="type === 'add'">
+        <el-form-item label="上架时间:">
           <el-date-picker 
             v-model="value" 
             type="datetime" 
@@ -81,7 +93,7 @@
             @change="(e)=>{onDateChange(e,'event_start_at')}">
           </el-date-picker>
         </el-form-item>
-        <el-form-item label="下架时间:" v-if="type === 'add'">
+        <el-form-item label="下架时间:">
           <el-date-picker 
             v-model="value1" 
             type="datetime"
@@ -99,7 +111,7 @@
             <el-option :key="1" label="上架" :value="1"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="上传图片:" v-if="type === 'add'">
+        <el-form-item label="上传图片:">
           <ImgUpload
             :fileType="1"
             :index="1"
@@ -121,7 +133,8 @@
 import {
 	TopicList,
   TopicUpdate,
-  TopicCreate
+  TopicCreate,
+  TopicSearch
 } from '@/assets/serve/api'
 import ImgUpload from "@/components/ImgUpload";
 export default {
@@ -133,6 +146,10 @@ export default {
       qryInput: {
         page: 1,
         status : 1
+      },
+      search: {
+        page: 1,
+        word: ''
       },
       list:[],
       status: '',
@@ -168,19 +185,40 @@ export default {
         }
       })
     },
+    TopicSearch() {
+      TopicSearch({...this.search}).then(res => {
+        if(res.code === 0) {
+          this.list = res.data.list
+        } else {
+          this.$message.error(res.msg)
+        }
+      })
+    },
     addTopic() {
       this.type = 'add'
       this.editTopicSync = true
       this.title = '添加话题'
     },
-    editTopic(row) {
+    editTopic(row,type) {
       this.type = 'edit'
       this.title = '修改话题'
-      this.editTopicSync = true
+      
       this.topicData.id = row.id
       this.topicData.status = row.status
       this.topicData.title = row.title
       this.topicData.content = row.content
+      this.topicData.event_start_at = row.event_start_at
+      this.value = row.event_start_at
+      this.topicData.event_end_at = row.event_end_at
+      this.value1 = row.event_end_at
+      this.topicData.poster = row.poster
+      this.images.url = row.poster
+      if (type == 1) {
+        this.editTopicSync = true
+      }else{
+        this.topicData.status = 3
+        this.submitTopic()
+      }
     },
     submitTopic() {
 			if(this.topicData.title == '') return this.$message.error('请输入标题！')
@@ -190,7 +228,7 @@ export default {
 			  if(this.topicData.event_end_at == '') return this.$message.error('请选择下架时间！')
         TopicCreate({...this.topicData}).then(res => {
           if(res.code === 0) {
-            this.$message.success('添加成功!')
+            this.$message.success('成功!')
             this.editTopicSync = false
             this.clearList()
             this.TopicList()
@@ -201,7 +239,7 @@ export default {
       } else if (this.type === 'edit'){
         TopicUpdate({...this.topicData}).then(res => {
           if(res.code === 0) {
-            this.$message.success('添加成功!')
+            this.$message.success('操作成功!')
             this.editTopicSync = false
             this.clearList()
             this.TopicList()
@@ -256,5 +294,11 @@ export default {
 img.photo{
 	width: 80px;
 	height:120px;
+}
+</style>
+
+<style>
+.el-button--text {
+  color:#E4BE28;
 }
 </style>

@@ -1,11 +1,11 @@
 <template>
-<div>
+<div class="upload">
   <div class="box-img"  v-if="fileType===1">
     <!--<a id="selectfiles" href="javascript:void(0);" class='btn' οnchange='console.log(888)'>选择文件</a>-->
     <!--<a id="postfiles" href="javascript:void(0);" class='btn'>开始上传</a>-->
     <div class="box el-icon-circle-plus" :id="'selectfiles'+index"  @dblclick.native="alert(index)">
-      <div class="img_del el-icon-circle-close" v-if="Url!==''" @click.stop="del(index)"></div>
-      <img :src="Url" alt="" v-if="Url!==null">
+      
+     <!-- <video :src="Url" alt=""></video> -->
       <div class="jindu_box" v-if="jintu">
         <el-progress type="circle" :percentage="percentage" color="#67C23A" v-if="percentage!==100"></el-progress>
         <el-progress type="circle" :percentage="percentage" status="success" v-if="percentage===100"></el-progress>
@@ -30,6 +30,26 @@
         检查
       </el-button>
     </div>
+
+    <!-- <div class="list"> -->
+        <div class="list" v-if="class_type == 'imgs'"   >
+          <!-- <block  v-if="class_type == 'imgs'"> -->
+            <div  class="item lists"  v-for="(item,index) in Url">
+                <div class="img_del el-icon-circle-close" v-if="Url!==''" @click.stop="del(index)"></div>
+                <img class="ok_img_video"  :src="item" alt="加载失败">
+            </div>
+          <!-- </block> -->
+          
+        </div>
+        <div v-else  class="item">
+            <div class="img_del el-icon-circle-close" v-if="Url!==''" @click.stop="del(index)"></div>
+            <img  class="ok_img_video" :src="Url" alt="" v-if="Url!==null && class_type =='img'">
+            <my-video  class="ok_img_video"  v-if="Url!==null && class_type =='video' &&video.sources[0].src"  :sources="video.sources" :options="video.options"></my-video>
+        </div>
+        
+    <!-- </div> -->
+    
+   
   </div>
 </template>
 
@@ -142,15 +162,34 @@ var Base64 = require('js-base64').Base64;
     })
     up.start()
   }
+
+
+  import myVideo from 'vue-video'
   export default {
     name: 'ImgUpload',
     data () {
       return {
-        // Url: null,
+        Url: null,
         percentage: 0,
         jintu: false,
-        pushName:''
+        pushName:'',
+        video: {
+          sources: [{
+            src: null,
+          }],
+          options: {
+            autoplay: true,
+            volume: 0.6,
+          }
+        }
       }
+    },
+    watch: {
+      Url(newval, oldval) {
+        console.log(newval,'new', oldval,'old')
+        this.video.sources[0].src = newval
+      }
+
     },
     props: {
       name:{
@@ -161,7 +200,11 @@ var Base64 = require('js-base64').Base64;
         type: Number,
         required: true
       },
-      Url:String,
+      // Url:{
+      //   type: [String, Array],
+      //   required: true
+      // },
+      Url:[String, Array],
       type: {
         type: Number,
         default:1
@@ -171,11 +214,14 @@ var Base64 = require('js-base64').Base64;
         default:0
       },
       add_img: Function,
-      del_img:Function
+      del_img:Function,
+      class_type:{
+        type: String,
+        default: 'img'
+      }
     },
     methods: {
       del (index) {
-        // alert(index)
         this.del_img(index)
       },
       inspect (url) {
@@ -183,11 +229,12 @@ var Base64 = require('js-base64').Base64;
       }
     },
     mounted () {
+      // console.log(this.Url)
       var that = this
       var uploader = new plupload.Uploader({
         runtimes: 'html5,flash,silverlight,html4',
         browse_button: 'selectfiles'+that.index,
-        multi_selection: false,
+        multi_selection: true,
         // container: document.getElementById('container'),
         flash_swf_url: './../assets/plupload-2.1.2/js/Moxie.swf',
         silverlight_xap_url: './../assets/plupload-2.1.2/js/Moxie.xap',
@@ -199,9 +246,9 @@ var Base64 = require('js-base64').Base64;
           },
           FileFiltered: function (up, files) {
             var fileSize = (Math.round(files.size * 100 / (1024 * 1024)) / 100).toString() // MB
-            if (fileSize > 20) {
+            if (fileSize > 200) {
               uploader.removeFile(files)
-              that.$message.error('文件不能大于20M')
+              that.$message.error('文件不能大于200M')
             }
           },
           FilesAdded: function (up, files) {
@@ -231,7 +278,7 @@ var Base64 = require('js-base64').Base64;
               that.pushName = file.name
               // console.log(Url)
               that.add_img(that.type, Url, that.index,that.fileType)
-              that.jintu = false
+              that.jintu = this.class_type == 'imgs'
               that.percentage = 0
             } else {
               that.jintu = false
@@ -245,10 +292,38 @@ var Base64 = require('js-base64').Base64;
         }
       })
       uploader.init()
+    },
+    components: {
+        myVideo
     }
   }
 </script>
 <style type="text/css" scope>
+.upload{
+  display: flex;
+  flex-wrap: wrap;
+}
+.upload .list{
+  display: flex;
+  flex-wrap: wrap;
+}
+.upload .item{
+  position: relative;
+  width: 210px;
+  margin-right: 20px;
+}
+.upload .lists .ok_img_video{
+  width: 210px;
+  height: 140px;
+}
+.lists {
+  /* background-color: #000; */
+}
+.ok_img_video{
+  width: 300px;
+  height: 200px;
+  margin-right: 20px;
+}
   .uploadImg-main {
     width: 100px;
     height: 130px;
@@ -295,8 +370,11 @@ var Base64 = require('js-base64').Base64;
   }
  
   .box {
-    width: 130px;
-    height: 130px;
+    /* min-width: 130px; */
+    /* max-width: 300px; */
+    /* min-height: 130px; */
+    /* width: 300px; */
+    /* height: 300px; */
     background: #F9F9F9;
     color: #D8D8D8;
     text-align: center;
@@ -306,15 +384,19 @@ var Base64 = require('js-base64').Base64;
   }
  
   .box img {
-    display: block;
+    display: inline-block;
     width: 100%;
     height: 100%;
-    position: absolute;
+    /* position: absolute;
     top: 0;
-    left: 0;
+    left: 0; */
   }
   .box-img{
-    width: 130px;
+    width: 210px;
+    margin-right: 20px;
+  }
+  .box-img .box{
+    width: 100%;
   }
   .img_name{
     width: 100%;
@@ -334,7 +416,7 @@ var Base64 = require('js-base64').Base64;
     position: absolute;
     width: 20px;
     height: 20px;
-    color: #989898;
+    color: #666;
     top: 5px;
     right: 5px;
     z-index: 111;

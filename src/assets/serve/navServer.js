@@ -1,11 +1,11 @@
 export const navList = [{
 menuName: "发布管理",
   submenus: [{
-		submenuName: "banner",
+		submenuName: "banner添加",
 		submenuUrl: "/BannerCreate",
 		component: r => require.ensure([], () => r(require('@/views/BannerCreate')), 'BannerCreate'),
   }, {
-    submenuName: "开屏广告",
+    submenuName: "banner列表",
     submenuUrl: "/bannerList",
     component: r => require.ensure([], () => r(require('@/views/bannerList')), 'bannerList'),
   }, {
@@ -13,11 +13,11 @@ menuName: "发布管理",
     submenuUrl: "/topic",
     component: r => require.ensure([], () => r(require('@/views/topic')), 'topic'),
   }, {
-    submenuName: "吐槽、视频、文章",
+    submenuName: "吐槽/视频/文章",
     submenuUrl: "/publicFeed",
     component: r => require.ensure([], () => r(require('@/views/publicFeed')), 'publicFeed'),
   }, {
-    submenuName: "广告",
+    submenuName: "开屏广告",
     submenuUrl: "/advertising",
     component: r => require.ensure([], () => r(require('@/views/advertising')), 'advertising'),
   }]
@@ -31,6 +31,10 @@ menuName: "审核管理",
     submenuName: "内容审核",
     submenuUrl: "/publicFeedList",
     component: r => require.ensure([], () => r(require('@/views/publicFeedList')), 'publicFeedList'),
+  },{
+    submenuName: "评论审核",
+    submenuUrl: "/comment",
+    component: r => require.ensure([], () => r(require('@/views/comment')), 'comment'),
   }],
 },{
 menuName: "用户管理",

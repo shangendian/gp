@@ -192,3 +192,13 @@ export default {
   border-top: 5px solid #f5f5f5;
 }
 </style>
+<style>
+.el-tooltip__popper.is-dark{
+  width: 40%;
+  padding: 24px;
+  background: #f5f5f5;
+  color: #333;
+  box-shadow: 0,0,6px,#333;
+  line-height: 24px;
+}
+</style>

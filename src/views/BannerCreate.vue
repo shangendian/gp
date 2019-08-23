@@ -23,7 +23,7 @@
 				</el-date-picker>
 			</el-form-item>
 			<el-form-item label="跳转链接:">
-				<el-input v-model="bannerData.detail_url"></el-input>
+				<el-input v-model="bannerData.detail_url" placeholder="输入链接"></el-input>
 			</el-form-item>
 			<!-- <el-form-item label="是否展示:">
 				<el-radio-group>
@@ -38,9 +38,11 @@
 					:name="images.name"
 					:Url="images.url"
 					:del_img="del_img"
+					type="img"
 					:add_img="add_img">
 				</ImgUpload>
 			</el-form-item>
+
 			<el-form-item>
 				<el-button type="warning" style="width: 200px" @click="submitBanner">提交</el-button>
 			</el-form-item>

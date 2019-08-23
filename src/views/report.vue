@@ -30,7 +30,7 @@
         </el-table-column>
         <el-table-column
           prop="obj_id"
-          label="文章ID"
+          label="内容ID"
           >
         </el-table-column>
         <el-table-column
@@ -52,12 +52,10 @@
           label="创建时间"
           >
         </el-table-column>
-        <el-table-column label="操作" width="100px">
+        <el-table-column label="操作" width="180">
           <template slot-scope="scope">
-            <el-button
-              type="primary"
-              @click="editReport(scope.row)"
-            >修改</el-button>
+            <el-button type="primary"  @click="editReport(scope.row)" >修改</el-button>
+            <!-- <el-button type="primary"  @click="editReport(scope.row)" >删除</el-button> -->
           </template>
         </el-table-column>
       </el-table>
@@ -75,6 +73,7 @@
               <el-select v-model="ReportData.status" placeholder="请选择" clearable>
                 <el-option :key="1" label="已处理" :value="1"></el-option>
                 <el-option :key="0" label="未处理" :value="0"></el-option>
+                <el-option :key="3" label="删除" :value="3"></el-option>
               </el-select>
             </el-form-item>
           <el-form-item>
@@ -129,7 +128,7 @@
         ReportUpdate({...this.ReportData}).then(res => {
           if(res.code === 0) {
             this.updateReportSync = false
-            this.$message.success('修改成功')
+            this.$message.success('操作成功')
             this.ReportGetList()
           } else {
             this.$message.error(res.msg)

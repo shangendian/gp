@@ -25,6 +25,7 @@ export default new Router({
         {path: '/report',name: 'report', component: () => import( './views/report')},
         {path: '/feedback',name: 'feedback', component: () => import( './views/feedback')},
         {path: '/versions',name: 'versions', component: () => import( './views/versions')},
+        {path: '/comment',name: 'comment', component: () => import( './views/comment')},
     ]},
     
   ],

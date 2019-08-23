@@ -14,12 +14,14 @@ export const TopicList = p => post('/admin/topic/getList', p);
 export const TopicCreate = p => post('/admin/topic/create', p);
 // 更新topic
 export const TopicUpdate = p => post('/admin/topic/update', p);
+export const TopicSearch = p => post('/admin/topic/search', p);
 // 发布吐槽、视频、文章
 export const FeedCreate = p => post('/admin/feed/create', p);
 // 列表
 export const FeedList = p => post('/admin/feed/getList', p);
 // 审核
 export const FeedCheck = p => post('/admin/feed/check', p);
+export const FeedUpdate = p => post('/admin/feed/update', p);
 // 快讯列表
 export const NewsflashGetList = p => post('/admin/newsflash/getList', p);
 // 修改
@@ -57,3 +59,7 @@ export const FeedbackGetList = p => post('/admin/feedback/getList', p);
 export const FeedbackUpdate = p => post('/admin/feedback/update', p);
 export const VersionGetList = p => post('/admin/version/getList', p);
 export const VersionCreate = p => post('/admin/version/create', p);
+export const VersionUpdate = p => post('/admin/version/update', p);
+export const commentGetList = p => post('/admin/comment/getList', p);
+export const commentUpdate = p => post('/admin/comment/update', p);
+export const redGetList = p => post('/admin/data/getList', p);

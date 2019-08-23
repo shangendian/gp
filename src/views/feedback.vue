@@ -31,7 +31,11 @@
           label="头像">
           <template slot-scope="scope">
             <!-- {{scope.row.poster}} -->
-            <img v-if='scope.row.user_avatar' class="photo" :src="scope.row.user_avatar" />
+            <!-- <img v-if='scope.row.user_avatar' class="photo" :src="scope.row.user_avatar" /> -->
+            <el-popover placement="right" title="" trigger="click">
+              <img :src="scope.row.user_avatar" style="max-height: 500px;max-width: 500px"/>
+              <img slot="reference" :src="scope.row.user_avatar" :alt="scope.row.user_avatar" style="max-height: 50px;max-width: 130px">
+            </el-popover>
           </template>
         </el-table-column>
         <el-table-column

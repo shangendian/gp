@@ -31,8 +31,8 @@
         <el-form-item label="请选择发布类型">
           <el-select v-model="qryInput.type" placeholder="请选择">
             <el-option :key="0" label="吐槽" value="dis"></el-option>
-            <el-option :key="1" label="视频" value="article"></el-option>
-            <el-option :key="2" label="文章" value="video"></el-option>
+            <el-option :key="1" label="视频" value="video"></el-option>
+            <el-option :key="2" label="文章" value="article"></el-option>
           </el-select>
         </el-form-item>
 				<el-form-item label="审核状态">
@@ -64,9 +64,11 @@
 			</el-table-column>
 			<el-table-column
 				label="封面">
-				<template slot-scope="scope">
-					<!-- {{scope.row.poster}} -->
-					<img v-if='scope.row.poster' class="photo" :src="scope.row.poster" />
+				<template slot-scope="scope" >
+          <el-popover placement="right" title="" trigger="click">
+            <img :src="scope.row.poster" style="max-height: 500px;max-width: 500px"/>
+            <img slot="reference" :src="scope.row.poster" :alt="scope.row.poster" style="max-height: 50px;max-width: 130px">
+          </el-popover>
 				</template>
 			</el-table-column>
       <el-table-column
@@ -99,29 +101,61 @@
 			</el-table-column>
       <el-table-column
 				prop="picts"
-				label="图片链接"
-        show-overflow-tooltip
-				>
+				label="图片"
+        >
+        <template slot-scope="scope" >
+          <!-- {{scope.row.picts[0]}} -->
+            <el-popover placement="right" title="" trigger="click">
+              <div class="a"  style="width: 500px; display: flex;flex-wrap: wrap;">
+                  <img  v-for=" item in scope.row.picts" :src="item" style="max-height: 120px;max-width: 120px; margin-right: 20px; margin-bottom: 20px;"/>
+
+              </div>
+              <img slot="reference" :src="scope.row.picts[0]" :alt="scope.row.picts[0]" style="max-height: 50px;max-width: 130px">
+            </el-popover>
+          </template>
 			</el-table-column>
       <el-table-column
 				prop="video_url"
-				label="视频链接"
-        show-overflow-tooltip
-				>
+				label="视频"
+        >
+        <template slot-scope="scope">
+
+            <el-popover placement="right" title="" trigger="click" @show="videoShow(scope.row)">
+                <my-video  v-if="video.sources[0].src != '' " class="ok_img_video" :sources="video.sources" :options="video.options"  style="height: 200px;max-width: 500px"></my-video>
+                <div v-else>暂无视频</div>
+                <span  slot="reference">查看</span>
+              </el-popover>
+          	<!-- <player :key="scope.$index" :videoUrl="scope.row.video_url" :width="210" :height="140"></player> -->
+            <!-- <my-video  class="ok_img_video"  :sources="video.sources" :options="video.options"></my-video> -->
+          </template>
 			</el-table-column>
       <el-table-column
 				prop="article_url"
 				label="文章链接"
-        show-overflow-tooltip
-				>
+        >
+      </el-table-column>
+      <el-table-column
+				prop="favorite_number"
+        label="收藏数"
+        width="80"
+        >
+        <template  slot-scope="scope">
+          <el-input size="mini" v-model="scope.row.favorite_number" @blur='FeedUpdate(scope.row)' ></el-input>
+        </template>
+      </el-table-column>
+      <el-table-column
+				prop="like_number"
+        label="点赞数"
+        width="80"
+        >
+        <template  slot-scope="scope">
+          <el-input size="mini" v-model="scope.row.like_number" @blur='FeedUpdate(scope.row)' ></el-input>
+        </template>
 			</el-table-column>
-			<el-table-column label="操作" width="100px">
+			<el-table-column label="操作" width="180px">
 				<template slot-scope="scope">
-					<el-button
-            v-if='scope.row.status === 0'
-						type="primary"
-						@click="checkFeed(scope.row)"
-					>审核</el-button>
+					<el-button v-if='scope.row.status === 0' type="primary" @click="checkFeed(scope.row)">审核</el-button>
+					<el-button  type="primary" @click="FeedCheck(3,scope.row)">删除</el-button>
 				</template>
 			</el-table-column>
 		</el-table>
@@ -144,107 +178,158 @@
   </div>
 </template>
 <script>
-import {
-	FeedList,
-	FeedCheck
-} from '@/assets/serve/api'
+    import myVideo from 'vue-video'
+import player from "@/components/Player";
+import { FeedList, FeedCheck, FeedUpdate } from "@/assets/serve/api";
 import ImgUpload from "@/components/ImgUpload";
 export default {
-	components: {
-		ImgUpload
-	},
-	data() {
-		return {
-			qryInput: {
-				page: 1,
-        user_name: '',
-        title: '',
-        content: '',
-        start_at: '',
-        end_at: '',
-        type: 'dis',
-				status: 0
-			},
-			list:[],
-			checkFeedSync: false,
-			value: '',
-			value1: '',
-			images: {
-				url: '',
-				name: ''
-			},
-			totalCount: 0,
-      checkData: {
-        id: '',
-        status: ''
+  components: {
+    ImgUpload,
+    player,
+    myVideo
+  },
+  data() {
+    return {
+      qryInput: {
+        page: 1,
+        user_name: "",
+        title: "",
+        content: "",
+        start_at: "",
+        end_at: "",
+        type: "dis",
+        status: 0
       },
-		}
-	},
-	created() {
-		this.FeedList()
-	},
-	methods: {
-		FeedList(){
-			FeedList({...this.qryInput}).then(res=>{
-				if(res.code == 0){
-					this.list = res.data.list
-          this.totalCount = res.data.cnt
-				} else {
-          this.$message.error(res.msg)
+      number: {
+        id: '',
+        favorite_number: 0,
+        like_number: 0
+      },
+      list: [],
+      checkFeedSync: false,
+      value: "",
+      value1: "",
+      images: {
+        url: "",
+        name: ""
+      },
+      totalCount: 0,
+      checkData: {
+        id: "",
+        status: ""
+      },
+      photo_list: [],
+      video: {
+          sources: [{
+            src: null,
+          }],
+          options: {
+            autoplay: true,
+            volume: 0.6,
+          }
         }
-			})
-		},
-		checkFeed(row) {
-			this.checkFeedSync = true
-      this.checkData.id = row.id
-		},
-		FeedCheck(status) {
-      this.checkData.status = status
-			FeedCheck({...this.checkData}).then(res => {
-				if(res.code === 0) {
-					this.checkFeedSync = false
-					this.FeedList()
-				} else {
-          this.$message.error(res.msg)
+    };
+  },
+  created() {
+    this.FeedList();
+  },
+  methods: {
+    videoShow(data){
+      console.log(data.video_url)
+      this.video.sources[0].src = data.video_url
+    },
+    FeedUpdate(row) {
+      this.number.id = row.id
+      this.number.like_number = row.like_number
+      this.number.favorite_number = row.favorite_number
+      FeedUpdate({...this.number}).then(res => {
+        if (res.code == 0) {
+          console.log(res)
+          this.FeedList()
+        } else {
+          this.$message.error(res.msg);
         }
-			}) 
-		},
-		del_img(index) {
-			this.images.url = ''
-		},
-		add_img(type, url, index, fileType) {
-			console.log(url)
-			this.images.url = url
-			this.checkData.poster = url
-		},
-		onDateChange(e, time) {
-			if(e) {
-				this.qryInput[time] = e
-			} else {
-				this.qryInput[time] = ''
-			}
-		},
-		handleSizeChange(val) {
-			console.log(`每页 ${val} 条`);
-		},
-		handleCurrentChange(val) {
-			this.qryInput.page = val
-			this.FeedList()
+      })
+    },
+    FeedList() {
+      FeedList({ ...this.qryInput }).then(res => {
+        if (res.code == 0) {
+          console.log(res.data.list )
+          res.data.list.forEach((item,index)=>{
+            if ( item.picts == '') {
+              item.picts =[]
+            }else{
+              console.log(item.picts)
+              item.picts = JSON.parse( item.picts)
+
+            }
+            item.picts = ["http://sougematch.oss-cn-beijing.aliyuncs.com/image/f7rCi3cTA31566574475313.jpg","http://sougematch.oss-cn-beijing.aliyuncs.com/image/BAMF664WJi1566574476903.png","http://sougematch.oss-cn-beijing.aliyuncs.com/image/Bzi6AKmNzd1566574477110.jpg","http://sougematch.oss-cn-beijing.aliyuncs.com/image/kmDrr3sMPz1566574484392.jpg","http://sougematch.oss-cn-beijing.aliyuncs.com/image/AB2Paac5Y71566574486890.png","http://sougematch.oss-cn-beijing.aliyuncs.com/image/4QsTHrs5Ks1566574487041.jpg"]
+          })
+          this.list = res.data.list;
+          this.totalCount = res.data.cnt;
+        } else {
+          this.$message.error(res.msg);
+        }
+      });
+    },
+    checkFeed(row) {
+      this.checkFeedSync = true;
+      this.checkData.id = row.id;
+    },
+    FeedCheck(status,data) {
+		if (data) {
+			this.checkData.id = data.id;
 		}
-	},
-}
+      this.checkData.status = status;
+      FeedCheck({ ...this.checkData }).then(res => {
+        if (res.code === 0) {
+          this.checkFeedSync = false;
+          this.FeedList();
+        } else {
+          this.$message.error(res.msg);
+        }
+      });
+    },
+    del_img(index) {
+      this.images.url = "";
+    },
+    add_img(type, url, index, fileType) {
+      console.log(url);
+      this.images.url = url;
+      this.checkData.poster = url;
+    },
+    onDateChange(e, time) {
+      if (e) {
+        this.qryInput[time] = e;
+      } else {
+        this.qryInput[time] = "";
+      }
+    },
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+    },
+    handleCurrentChange(val) {
+      this.qryInput.page = val;
+      this.FeedList();
+    }
+  }
+};
 </script>
 <style lang="less" scope>
-.bannerList{
+.bannerList {
 }
-img.photo{
-	width: 80px;
-	height:120px;
+img.photo {
+  width: 80px;
+  height: 120px;
 }
 .title {
-	text-align:center;
-	padding: 20px 0;
-	color:#E4BE28;
+  text-align: center;
+  padding: 20px 0;
+  color: #e4be28;
   border-top: 5px solid #f5f5f5;
+}
+.ok_img_video{
+  width: 300px;
+  height: 200px;
 }
 </style>

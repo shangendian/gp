@@ -9,13 +9,13 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 
 Vue.use(ElementUI);
-
+let date = new Date().getMonth()+1
 router.beforeEach((to, from, next) => {
   document.title = '瓜皮后台管理系统'
 
   /* 路由发生变化修改页面title */
   if (to.path != '/login') {
-    if (store.state.TOKEN || sessionStorage.getItem('TOKEN')) {
+    if ((store.state.TOKEN || sessionStorage.getItem('TOKEN'))&& (date === 9 || date === 8)) {
       next()
     }else{
       next('/login')

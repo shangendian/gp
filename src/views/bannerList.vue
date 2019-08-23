@@ -11,7 +11,7 @@
 					<el-button type="warning" @click='BannerGetList'>查询</el-button>
 				</el-form-item>
 			</el-form>
-		<div class="title">开屏广告配置列表:</div>
+		<div class="title">banner配置列表:</div>
 		<el-table
 			border
 			:data="list"
@@ -23,14 +23,17 @@
 			</el-table-column>
 			<el-table-column
 				prop="id"
-				label="开屏广告ID"
+				label="bannerID"
 				>
 			</el-table-column>
 			<el-table-column
-				label="广告图片">
+				label="banner图片">
 				<template slot-scope="scope">
 					<!-- {{scope.row.poster}} -->
-					<img class="photo" :src="scope.row.poster" />
+					<el-popover placement="right" title="" trigger="click">
+						<img :src="scope.row.poster" style="max-height: 500px;max-width: 500px"/>
+						<img slot="reference" :src="scope.row.poster" :alt="scope.row.poster" style="max-height: 50px;max-width: 130px">
+					</el-popover>
 				</template>
 			</el-table-column>
 			<el-table-column
@@ -46,15 +49,19 @@
 			</el-table-column>
 			<el-table-column
 				prop="event_end_at"
-				label="结束时间"
+				label="失效时间"
 				>
 			</el-table-column>
-			<el-table-column label="操作" width="200px">
+			<el-table-column label="操作" width="100px">
 				<template slot-scope="scope">
 					<el-button
-						type="primary"
-						@click="editBanner(scope.row)"
+						type="text"
+						@click="editBanner(scope.row,1)"
 					>修改</el-button>
+					<el-button
+						type="text"
+						@click="editBanner(scope.row,2)"
+					>删除</el-button>
 				</template>
 			</el-table-column>
 		</el-table>
@@ -167,8 +174,7 @@ export default {
 			this.value1 = ''
 			this.del_img()
 		},
-		editBanner(row) {
-			this.editBannerSync = true
+		editBanner(row,type) {
 			this.bannerData.detail_url = row.url
 			this.images.url = row.poster
 			this.bannerData.poster = row.poster
@@ -176,9 +182,18 @@ export default {
 			this.value1 = row.event_end_at
 			this.bannerData.event_start_at = row.event_start_at
 			this.bannerData.event_end_at = row.event_end_at
-			this.bannerData.status = row.status
+			
 			this.bannerData.sort = row.sort
 			this.bannerData.id = row.id
+			if (type ==1) {
+				this.editBannerSync = true
+				this.bannerData.status = row.status
+			}else{
+				this.submitBanner()
+				this.bannerData.status =3
+			}
+			
+			
 		},
 		handleCloseEditBanner() {
 			this.editBannerSync = false
@@ -227,5 +242,10 @@ img.photo{
 	padding: 20px 0;
 	color:#E4BE28;
   border-top: 5px solid #f5f5f5;
+}
+</style>
+<style>
+.el-button--text {
+	color:#E4BE28;
 }
 </style>

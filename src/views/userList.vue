@@ -11,6 +11,9 @@
       <el-form-item label="昵称:">
 				<el-input v-model="qryInput.nick_name"></el-input>
       </el-form-item>
+      <el-form-item label="用户ID:">
+				<el-input v-model="qryInput.userid"></el-input>
+      </el-form-item>
       <el-form-item label="手机号:">
 				<el-input v-model="qryInput.mobile"></el-input>
       </el-form-item>
@@ -37,8 +40,12 @@
 			<el-table-column
 				label="头像">
 				<template slot-scope="scope">
-					<!-- {{scope.row.poster}} -->
-					<img v-if='scope.row.avatar' class="photo" :src="scope.row.avatar" />
+          <!-- {{scope.row.poster}} -->
+          <el-popover placement="right" title="" trigger="click">
+            <img :src="scope.row.avatar" style="max-height: 500px;max-width: 500px"/>
+            <img slot="reference" :src="scope.row.avatar" :alt="scope.row.avatar" style="max-height: 50px;max-width: 130px">
+          </el-popover>
+					<!-- <img v-if='scope.row.avatar' class="photo" :src="scope.row.avatar" /> -->
 				</template>
 			</el-table-column>
       <el-table-column
@@ -103,7 +110,8 @@ export default {
         page: 1,
         status: '',
         nick_name: "",
-        mobile: ''
+        mobile: '',
+        userid: ''
       },
       totalCount: 0,
       list: [],
