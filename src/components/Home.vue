@@ -68,11 +68,11 @@
         pwd: '',
 				logoutSync: false,
 				
-				comment_cnt: 209,
-				feed_back_cnt: 4,
-				feed_cnt: 2,
-				news_flash_cnt: 75,
-				report_cnt: 9
+				comment_cnt: 0,
+				feed_back_cnt: 0,
+				feed_cnt: 0,
+				news_flash_cnt: 0,
+				report_cnt: 0
       }
     },
     computed: {

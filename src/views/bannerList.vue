@@ -131,7 +131,7 @@ export default {
 		return {
 			qryInput: {
 				page: 1,
-				status: 0
+				status: 1
 			},
 			list:[],
 			editBannerSync: false,

@@ -6,8 +6,9 @@
       </el-form-item>
       <el-form-item label="是否展示">
           <el-select v-model="qryInput.status" placeholder="请选择">
-            <el-option :key="0" label="下架" :value="0"></el-option>
             <el-option :key="1" label="上架" :value="1"></el-option>
+            <el-option :key="0" label="下架" :value="0"></el-option>
+
           </el-select>
         </el-form-item>
       <el-form-item>
@@ -28,6 +29,11 @@
       <el-table-column
 				prop="from"
 				label="来源"
+				>
+      </el-table-column>
+      <el-table-column
+				prop="created_at"
+				label="创建时间"
 				>
       </el-table-column>
       <el-table-column

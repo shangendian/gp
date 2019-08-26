@@ -128,7 +128,7 @@
             <el-option key="b" label="上架" :value="1"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="上传图片:" v-if="type === 'add'">
+        <el-form-item label="上传图片:" >
           <ImgUpload
             :fileType="1"
             :index="1"

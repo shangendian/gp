@@ -40,6 +40,13 @@
           >
         </el-table-column>
         <el-table-column
+          prop="obj.content"
+          label="举报内容"
+          show-overflow-tooltip
+          >
+        </el-table-column>
+        
+        <el-table-column
           prop="status"
           label="状态"
           >

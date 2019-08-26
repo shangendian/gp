@@ -92,7 +92,7 @@
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="UserUpdate(1)">通 过</el-button>
         <el-button type="warning" @click="UserUpdate(2)">禁 用</el-button>
-        <el-button type="danger" @click="UserUpdate(3)">拉 黑</el-button>
+        <!-- <el-button type="danger" @click="UserUpdate(3)">拉 黑</el-button> -->
       </span>
     </el-dialog>
   </div>

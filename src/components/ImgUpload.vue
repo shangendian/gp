@@ -64,7 +64,7 @@ var Base64 = require('js-base64').Base64;
   // sougegeshe // sougematch
   let accessid = 'LTAIShfs0pmAbRkb'
   let accesskey = 'qlx4Fp0yLI8fbA9zQmVIcPsCCdGBBh'
-  let host = 'http://sougematch.oss-cn-beijing.aliyuncs.com'
+  let host = 'https://guapi-file.oss-cn-zhangjiakou.aliyuncs.com'
   let bucket = 'image'
  
   let g_dirname = ''
@@ -277,7 +277,7 @@ var Base64 = require('js-base64').Base64;
               var Url = host + '/' + g_dirname + get_uploaded_object_name(file.name)
               that.pushName = file.name
               // console.log(Url)
-              that.add_img(that.type, Url, that.index,that.fileType)
+              that.add_img(that.type, Url, that.index,that.fileType,that.pushName)
               that.jintu = this.class_type == 'imgs'
               that.percentage = 0
             } else {

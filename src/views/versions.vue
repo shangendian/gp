@@ -85,7 +85,7 @@
             </el-select>
           </el-form-item>
           <el-form-item label="版本名称:">
-            <el-input v-model="VersionData.version_name"></el-input>
+            <el-input v-model="VersionData.version_name" :disabled="VersionData.type == 'android'"></el-input>
           </el-form-item>
           <el-form-item label="版本代码:">
             <el-input v-model="VersionData.version"></el-input>
@@ -167,9 +167,11 @@
       del_img(index) {
         this.images.url = ''
       },
-      add_img(type, url, index, fileType) {
+      add_img(type, url, index, fileType, fileName) {
+        console.log(type, url, index, fileType, fileName)
         this.images.url = url
         this.VersionData.app_url = url
+        this.VersionData.version_name = fileName
       },
       VersionGetList() {
         VersionGetList({...this.qryInput}).then(res => {

@@ -27,6 +27,5 @@ export default new Router({
         {path: '/versions',name: 'versions', component: () => import( './views/versions')},
         {path: '/comment',name: 'comment', component: () => import( './views/comment')},
     ]},
-    
   ],
 });

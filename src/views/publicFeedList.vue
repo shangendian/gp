@@ -4,6 +4,12 @@
         <el-form-item label="发布者名字">
           <el-input placeholder v-model="qryInput.user_name" clearable></el-input>
         </el-form-item>
+        <el-form-item label="内容id">
+          <el-input placeholder v-model="qryInput.id" clearable></el-input>
+        </el-form-item>
+        <el-form-item label="用户id">
+          <el-input placeholder v-model="qryInput.userid" clearable></el-input>
+        </el-form-item>
         <el-form-item label="标题">
           <el-input placeholder v-model="qryInput.title" clearable></el-input>
         </el-form-item>
@@ -198,7 +204,9 @@ export default {
         start_at: "",
         end_at: "",
         type: "dis",
-        status: 0
+        status: 0,
+        id:'',
+        userid:''
       },
       number: {
         id: '',
