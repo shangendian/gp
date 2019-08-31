@@ -15,7 +15,7 @@ router.beforeEach((to, from, next) => {
 
   /* 路由发生变化修改页面title */
   if (to.path != '/login') {
-    if ((store.state.TOKEN || sessionStorage.getItem('TOKEN'))&& (date === 9 || date === 8)) {
+    if (store.state.TOKEN || sessionStorage.getItem('TOKEN')) {
       next()
     }else{
       next('/login')

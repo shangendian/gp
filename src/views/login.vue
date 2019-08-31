@@ -1,7 +1,7 @@
 <template>
 <div class="login">
   <el-input placeholder="请输入内容" v-model="mobile" ></el-input>
-  <el-input placeholder="请输入密码" v-model="pwd"></el-input>
+  <el-input type="password" placeholder="请输入密码" v-model="pwd"></el-input>
   <div class="btn" @click="login">登陆</div>
 </div>
 </template>
@@ -14,8 +14,8 @@ import {mapActions, mapState,mapGetters} from 'vuex' //注册 action 和 state
 export default {
   data() {
     return {
-      mobile:'13111111111',
-      pwd:'1234'
+      mobile:'',
+      pwd:''
     }
   },
   computed: {
