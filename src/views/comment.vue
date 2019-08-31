@@ -116,7 +116,7 @@ export default {
   data() {
     return {
       qryInput:{
-        status: 0,
+        status:1,
         page: 1,
         obj_id: '',
         userid: ''

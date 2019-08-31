@@ -63,3 +63,4 @@ export const VersionUpdate = p => post('/admin/version/update', p);
 export const commentGetList = p => post('/admin/comment/getList', p);
 export const commentUpdate = p => post('/admin/comment/update', p);
 export const redGetList = p => post('/admin/data/getList', p);
+export const newsflashCreate = p => post('/admin/newsflash/create', p);

@@ -62,10 +62,10 @@ require("@/../public/crypto1/sha1/sha1.js")
 
 var Base64 = require('js-base64').Base64;
   // sougegeshe // sougematch
-  let accessid = 'LTAIShfs0pmAbRkb'
-  let accesskey = 'qlx4Fp0yLI8fbA9zQmVIcPsCCdGBBh'
+  let accessid = 'LTAI4g3V1iUexcIc'
+  let accesskey = 'CcrouzI3aD4JizB6iv7UHl6VgrOfk1'
   let host = 'https://guapi-file.oss-cn-zhangjiakou.aliyuncs.com'
-  let bucket = 'image'
+  let bucket = 'guapi-file'
  
   let g_dirname = ''
   let g_object_name = ''
@@ -148,7 +148,7 @@ var Base64 = require('js-base64').Base64;
       calculate_object_name(filename)
     }
     let new_multipart_params = {
-      'Filename': g_dirname + g_object_name,
+      'Filename': filename,
       'key': g_dirname + g_object_name,
       'policy': policyBase64,
       'OSSAccessKeyId': accessid,
@@ -173,6 +173,7 @@ var Base64 = require('js-base64').Base64;
         percentage: 0,
         jintu: false,
         pushName:'',
+        fileName:'',
         video: {
           sources: [{
             src: null,
@@ -246,13 +247,13 @@ var Base64 = require('js-base64').Base64;
           },
           FileFiltered: function (up, files) {
             var fileSize = (Math.round(files.size * 100 / (1024 * 1024)) / 100).toString() // MB
-            if (fileSize > 200) {
+            if (fileSize > 1000) {
               uploader.removeFile(files)
-              that.$message.error('文件不能大于200M')
+              that.$message.error('文件不能大于1000M')
             }
           },
           FilesAdded: function (up, files) {
- 
+            
             set_upload_param(uploader, '', false)
           },
  
@@ -260,6 +261,7 @@ var Base64 = require('js-base64').Base64;
             check_object_radio()
             get_dirname()
             set_upload_param(up, file.name, true)
+            that.fileName = file.name
           },
  
           UploadProgress: function (up, file) {
@@ -276,8 +278,8 @@ var Base64 = require('js-base64').Base64;
               })
               var Url = host + '/' + g_dirname + get_uploaded_object_name(file.name)
               that.pushName = file.name
-              // console.log(Url)
-              that.add_img(that.type, Url, that.index,that.fileType,that.pushName)
+              console.log(281,that.fileName)
+              that.add_img(that.type, Url, that.index,that.fileType,that.fileName)
               that.jintu = this.class_type == 'imgs'
               that.percentage = 0
             } else {

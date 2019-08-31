@@ -85,7 +85,7 @@
             </el-select>
           </el-form-item>
           <el-form-item label="版本名称:">
-            <el-input v-model="VersionData.version_name" :disabled="VersionData.type == 'android'"></el-input>
+            <el-input v-model="VersionData.version_name" ></el-input>
           </el-form-item>
           <el-form-item label="版本代码:">
             <el-input v-model="VersionData.version"></el-input>

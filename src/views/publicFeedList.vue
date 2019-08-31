@@ -36,9 +36,10 @@
 				</el-form-item>
         <el-form-item label="请选择发布类型">
           <el-select v-model="qryInput.type" placeholder="请选择">
-            <el-option :key="0" label="吐槽" value="dis"></el-option>
             <el-option :key="1" label="视频" value="video"></el-option>
             <el-option :key="2" label="文章" value="article"></el-option>
+            <el-option :key="0" label="吐槽" value="dis"></el-option>
+
           </el-select>
         </el-form-item>
 				<el-form-item label="审核状态">
@@ -203,7 +204,7 @@ export default {
         content: "",
         start_at: "",
         end_at: "",
-        type: "dis",
+        type: "video",
         status: 0,
         id:'',
         userid:''

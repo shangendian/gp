@@ -115,7 +115,7 @@ export default {
       qryInput: {
         page: 1,
         word: '',
-        status: 1
+        status: 0
       },
       flashData: {
         id: '',

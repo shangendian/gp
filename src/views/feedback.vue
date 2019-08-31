@@ -104,7 +104,7 @@
     data() {
       return {
         qryInput:{
-          status: 1,
+          status: 0,
           page: 1
         },
         FeedbackData: {

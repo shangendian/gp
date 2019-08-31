@@ -18,6 +18,7 @@ export default new Router({
         {path: '/flash',name: 'flash', component: () => import( './views/flash')},
         {path: '/topic',name: 'topic', component: () => import( './views/topic')},
         {path: '/publicFeed',name: 'publicFeed', component: () => import( './views/publicFeed')},
+        {path: '/publicFlash',name: 'publicFlash', component: () => import( './views/publicFlash')},
         {path: '/publicFeedList',name: 'publicFeedList', component: () => import( './views/publicFeedList')},
         {path: '/advertising',name: 'advertising', component: () => import( './views/advertising')},
         {path: '/userList',name: 'userList', component: () => import( './views/userList')},
