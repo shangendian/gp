@@ -68,6 +68,12 @@
 				prop="id"
 				label="ID"
 				>
+      </el-table-column>
+      <el-table-column
+				prop="title"
+        label="标题"
+        show-overflow-tooltip
+				>
 			</el-table-column>
 			<el-table-column
 				label="封面">
