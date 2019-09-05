@@ -121,7 +121,6 @@
             <el-popover placement="right" title="" trigger="click">
               <div class="a"  style="width: 500px; display: flex;flex-wrap: wrap;">
                   <img  v-for=" item in scope.row.picts" :src="item" style="max-height: 120px;max-width: 120px; margin-right: 20px; margin-bottom: 20px;"/>
-
               </div>
               <img slot="reference" :src="scope.row.picts[0]" :alt="scope.row.picts[0]" style="max-height: 50px;max-width: 130px">
             </el-popover>
@@ -278,7 +277,6 @@ export default {
               item.picts = JSON.parse( item.picts)
 
             }
-            item.picts = ["http://sougematch.oss-cn-beijing.aliyuncs.com/image/f7rCi3cTA31566574475313.jpg","http://sougematch.oss-cn-beijing.aliyuncs.com/image/BAMF664WJi1566574476903.png","http://sougematch.oss-cn-beijing.aliyuncs.com/image/Bzi6AKmNzd1566574477110.jpg","http://sougematch.oss-cn-beijing.aliyuncs.com/image/kmDrr3sMPz1566574484392.jpg","http://sougematch.oss-cn-beijing.aliyuncs.com/image/AB2Paac5Y71566574486890.png","http://sougematch.oss-cn-beijing.aliyuncs.com/image/4QsTHrs5Ks1566574487041.jpg"]
           })
           this.list = res.data.list;
           this.totalCount = res.data.cnt;
