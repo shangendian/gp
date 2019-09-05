@@ -120,7 +120,7 @@
           <!-- {{scope.row.picts[0]}} -->
             <el-popover placement="right" title="" trigger="click">
               <div class="a"  style="width: 500px; display: flex;flex-wrap: wrap;">
-                  <img  v-for=" item in scope.row.picts" :src="item" style="max-height: 120px;max-width: 120px; margin-right: 20px; margin-bottom: 20px;"/>
+                  <img  v-for=" item in scope.row.picts" v-gallery="scope.row.picts" :src="item" style="max-height: 120px;max-width: 120px; margin-right: 20px; margin-bottom: 20px;"/>
               </div>
               <img slot="reference" :src="scope.row.picts[0]" :alt="scope.row.picts[0]" style="max-height: 50px;max-width: 130px">
             </el-popover>

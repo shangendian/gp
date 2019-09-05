@@ -12,6 +12,7 @@
     "core-js": "^2.6.5",
     "crypto1": "^1.0.0",
     "element-ui": "^2.11.1",
+    "img-vuer": "^0.19.1",
     "js-base64": "^2.5.1",
     "plupload": "^2.3.6",
     "v-viewer": "^1.4.2",
