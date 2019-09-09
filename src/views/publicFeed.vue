@@ -44,7 +44,7 @@
 					:add_img="add_video">
 				</ImgUpload>
 			</el-form-item>
-			<el-form-item label="图片:"  v-if="feedData.type == 'article'">
+			<el-form-item label="图片:"  v-if="feedData.type == 'dis'">
 				<!-- <el-input v-model="feedData.picts"></el-input> -->
 				<ImgUpload
 					:fileType="1"
@@ -144,7 +144,11 @@ export default {
 			// if(this.feedData.article_url == '') return this.$message.error('请输入文章链接！')
 			// if(this.feedData.content == '') return this.$message.error('请输入内容！')
 			// if(this.feedData.poster == '') return this.$message.error('请上传图片！')
-			FeedCreate({...this.feedData}).then(res => {
+			let data = JSON.parse(JSON.stringify({...this.feedData}))
+			data.picts= JSON.parse(data.picts)
+			console.log(data)
+			// return
+			FeedCreate(data).then(res => {
 				if(res.code === 0) {
 					this.del_img()
 					this.clearList()
