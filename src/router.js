@@ -27,6 +27,7 @@ export default new Router({
         {path: '/feedback',name: 'feedback', component: () => import( './views/feedback')},
         {path: '/versions',name: 'versions', component: () => import( './views/versions')},
         {path: '/comment',name: 'comment', component: () => import( './views/comment')},
+        {path: '/publicArticle',name: 'publicArticle', component: () => import( './views/publicArticle')},
     ]},
   ],
 });

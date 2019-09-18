@@ -17,6 +17,10 @@ menuName: "发布管理",
     submenuUrl: "/publicFeed",
     component: r => require.ensure([], () => r(require('@/views/publicFeed')), 'publicFeed'),
   }, {
+    submenuName: "发布文章",
+    submenuUrl: "/publicArticle",
+    component: r => require.ensure([], () => r(require('@/views/publicArticle')), 'publicArticle'),
+  }, {
     submenuName: "发布快讯",
     submenuUrl: "/publicFlash",
     component: r => require.ensure([], () => r(require('@/views/publicFlash')), 'publicFlash'),

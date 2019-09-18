@@ -145,8 +145,8 @@ export default {
 			// if(this.feedData.content == '') return this.$message.error('请输入内容！')
 			// if(this.feedData.poster == '') return this.$message.error('请上传图片！')
 			let data = JSON.parse(JSON.stringify({...this.feedData}))
-			data.picts= JSON.parse(data.picts)
-			console.log(data)
+			if(data.picts !== '') data.picts= JSON.parse(data.picts)
+			console.log(data,123)
 			// return
 			FeedCreate(data).then(res => {
 				if(res.code === 0) {

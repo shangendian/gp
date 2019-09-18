@@ -8,8 +8,13 @@
 			<el-form-item label="内容:">
 				<el-input type="textarea" v-model="feedData.content"></el-input>
 			</el-form-item>
-
-			
+			<el-form-item label="是否推送:">
+				<el-switch
+				v-model="feedData.push"
+				active-color="#13ce66"
+				inactive-color="#999">
+			</el-switch>
+		</el-form-item>
 			<el-form-item>
 				<el-button type="warning" style="width: 200px" @click="submitFeed">提交</el-button>
 			</el-form-item>
@@ -29,10 +34,11 @@ export default {
 	},
 	data() {
 		return {
-			
+		
 			feedData: {
 				content: '',
 				title: '',
+				push: false,
 			}
 		}
 	},
